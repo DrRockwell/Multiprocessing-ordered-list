@@ -5,19 +5,20 @@ import random
 
 q = Queue()
 process = []
-dict = {}
+pre_dict = {}
+
 
 def f(q, index_num):
     x = (index_num + 1) * 100
-    time.sleep(random.randint(0,3))
+    time.sleep(random.uniform(0, 1))
     outset = {
-    index_num: x
+        index_num: x
     }
     q.put(outset)
 
 
 for i in range(20):
-    p = multiprocessing.Process(target=f, args=(q,i))
+    p = multiprocessing.Process(target=f, args=(q, i))
     p.start()
     process.append(p)
 
@@ -25,13 +26,13 @@ for p in process:
     p.join()
 
 for i in range(20):
-    dict = {**dict, **q.get()}
+    pre_dict = {**pre_dict, **q.get()}
 
-print(f'This is the unsorted return Dictionary:\n{dict}')
+print(f'This is the unsorted return Dictionary:\n{pre_dict}')
 
-key = list(dict.keys())
+key = list(pre_dict.keys())
 key.sort()
-sort_dict = {i: dict[i] for i in key}
+sort_dict = {i: pre_dict[i] for i in key}
 
 print(f'\nThese are the sorted Dictionary values:\n{sort_dict.values()}')
 
